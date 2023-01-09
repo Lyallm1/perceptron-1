@@ -1,20 +1,6 @@
 import { sign } from '../activation';
 import { TrainingData } from '../training-data';
-
-/** Returns a random value between -1 an 1 */
-const randomValue: () => number = () => Math.random() * 2 - 1;
-
-/** Returns a shuffled copy of an array */
-const shuffle: (array: any[]) => any[] = (array: any[]) => {
-  const newArray = [...array];
-
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-
-  return newArray;
-};
+import { randomValue, shuffle } from '../utils';
 
 export class Perceptron {
   private weights: number[];
