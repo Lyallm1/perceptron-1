@@ -1,0 +1,31 @@
+module.exports = {
+  ignorePatterns: ['**/*.json', 'node_modules/**/*', 'dist/**/*'],
+  env: {
+    browser: true,
+    es2021: true,
+    node: true,
+  },
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: ['@typescript-eslint'],
+  rules: {
+    indent: ['error', 2],
+    quotes: ['error', 'single'],
+    semi: ['error', 'always'],
+    'space-before-function-paren': ['error', 'always'],
+    'comma-dangle': ['error', 'always-multiline'],
+    'quote-props': ['error', 'as-needed'],
+    'no-trailing-spaces': ['error', { ignoreComments: true }],
+    'object-curly-spacing': ['error', 'always'],
+    'comma-spacing': ['error', { before: false, after: true }],
+    'arrow-spacing': ['error', { before: true, after: true }],
+    'keyword-spacing': ['error', { before: true, after: true }],
+    'block-spacing': ['error', 'always'],
+    'space-before-blocks': ['error', 'always'],
+    'space-infix-ops': 'error',
+  },
+};
