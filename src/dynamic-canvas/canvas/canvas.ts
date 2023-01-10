@@ -45,27 +45,7 @@ export class Canvas {
     this.shapes.forEach((shape: Shape) => { shape.draw(this.context); });
   }
 
-  public update (): void {
-    this.shapes.forEach(shape => {
-      this.environmentForces.forEach(force => {
-        shape.applyForce(force);
-      });
-      shape.update(this.width, this.height);
-    });
-  }
-
   public addEventListener (type: string, eventListener: any): void {
     this.canvasElement.addEventListener(type, eventListener);
-  }
-
-  public startLoop (fps = 60): void {
-    this.loop = setInterval(() => {
-      this.update();
-      this.draw();
-    }, 1000 / fps);
-  }
-
-  public stopLoop (): void {
-    clearInterval(this.loop);
   }
 }

@@ -22,17 +22,17 @@ export class Perceptron {
   }
 
   /** Returns the linear function this perceptron represents (y = mx + b) */
-  public get f (): (x: number) => number {
+  private get f (): (x: number) => number {
     return (x: number): number => this.m * x + this.b;
   }
 
   /** Returns the m part of the linear function this perceptron represents (y = mx + b) */
-  public get m (): number {
+  private get m (): number {
     return -this.weights[0] / this.weights[1];
   }
 
   /** Returns the b part of the linear function this perceptron represents (y = mx + b) */
-  public get b (): number {
+  private get b (): number {
     return -this.biasWeight / this.weights[1];
   }
 
@@ -48,5 +48,16 @@ export class Perceptron {
       this.weights = this.weights.map((weight, index) => weight + error * datum.values[index] * this.learningRate);
       this.biasWeight = this.biasWeight + error * this.learningRate;
     });
+  }
+
+  /** Returns the internal values of the perceptron */
+  public get status () {
+    return {
+      weights: this.weights,
+      biasWeight: this.biasWeight,
+      f: this.f,
+      m: this.m,
+      b: this.b,
+    };
   }
 }

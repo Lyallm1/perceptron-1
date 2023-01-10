@@ -4,18 +4,9 @@ import { Shape } from './shape';
 export class Ball extends Shape {
   private radius: number;
 
-  protected topOffset: number;
-  protected bottomOffset: number;
-  protected rightOffset: number;
-  protected leftOffset: number;
-
-  constructor (radius: number, position: Vector, velocity: Vector, acceleration: Vector, public color = 'blue', public stroke = 'red') {
-    super(position, velocity, acceleration);
+  constructor (radius: number, position: Vector, public color = 'blue', public stroke = 'red') {
+    super(position);
     this.radius = radius;
-    this.topOffset = radius;
-    this.rightOffset = radius;
-    this.bottomOffset = radius;
-    this.leftOffset = radius;
   }
 
   public draw (context: CanvasRenderingContext2D): void {
