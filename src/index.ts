@@ -9,30 +9,33 @@ import { Text } from './dynamic-canvas/shapes/text';
 const perceptron = new Perceptron(2, 0.01);
 
 function f (x: number): number {
-  return 0.85 * x - 0.42;
+  return 1.00 * x - 0.42;
 }
 
 const trainingData: TrainingData[] = new Array(500).fill(0).map(_ => {
   const x = Math.random() * 2 - 1;
-  const y = Math.random() * 2 - 1;
+  const y = Math.random() * 2 - 1; // TODO: use utils
   const label = (y > f(x) ? 1 : -1);
 
-  return { values: [x, y], label };
+  return { values: [x, y], label, error: 1 };
 });
 
 const canvas = new Canvas(document.getElementById('container'));
 const perceptronVisualization = new Canvas(document.getElementById('container'), { width: 400, height: 300 });
+const lossVisualization = new Canvas(document.getElementById('container'), { width: 400, height: 300 });
+const lossHistory: number[] = [];
 
 setInterval(() => {
-  if (!trainingData.find(data => !data.correct)) {
+  if (!trainingData.find(data => data.error)) {
     console.log(`Training completed: ${perceptron.status.m.toFixed(2)} * x + ${perceptron.status.b.toFixed(2)} (expected ${f(1) - f(0)} * x + ${f(0)})`);
     // TODO: stop interval
     return;
   }
 
-  perceptron.train(trainingData);
+  lossHistory.push(perceptron.train(trainingData));
+
   canvas.removeShapes();
-  trainingData.map(data => new Ball(3, new Vector(data.values[0] * 400 + 400, data.values[1] * 300 + 300), data.label === 1 ? 'gold' : 'lightblue', data.correct ? 'green' : 'red')).forEach(ball => canvas.addShape(ball));
+  trainingData.map(data => new Ball(3, new Vector(data.values[0] * 400 + 400, data.values[1] * 300 + 300), data.label === 1 ? 'gold' : 'lightblue', data.error ? 'red' : 'green')).forEach(ball => canvas.addShape(ball));
 
   console.log(`Thinking: ${perceptron.status.m.toFixed(2)} * x + ${perceptron.status.b.toFixed(2)}`);
 
@@ -40,6 +43,7 @@ setInterval(() => {
   canvas.draw();
 
   drawPerceptron(perceptron, 0, 0);
+  drawLossHistory(lossHistory);
 }, 300);
 
 function drawPerceptron (p: Perceptron, x: number, y: number) {
@@ -86,3 +90,30 @@ canvas.addEventListener('mousemove', (e: MouseEvent) => {
 
   drawPerceptron(perceptron, x, y);
 });
+
+function drawLossHistory (h: number[]) {
+  lossVisualization.removeShapes();
+
+  const w = 350 / h.length;
+  const m = Math.max(...h);
+
+  lossVisualization.addShape(new Line(new Vector(25, 25), new Vector(25, 275)));
+  lossVisualization.addShape(new Line(new Vector(25, 275), new Vector(375, 275)));
+  lossVisualization.draw();
+
+  const ctx = lossVisualization.context;
+  ctx.beginPath();
+  h.forEach((l, i) => {
+    const x = 25 + w * i;
+    const y = 275 - l / m * 250;
+    ctx.fillText(l + '', x - 3, y - 5);
+    if (i === 0) ctx.moveTo(x, y);
+    else {
+      ctx.lineTo(x, y);
+      ctx.moveTo(x, y);
+    }
+  });
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = 'black';
+  ctx.stroke();
+}

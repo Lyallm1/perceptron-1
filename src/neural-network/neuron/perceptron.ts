@@ -37,17 +37,22 @@ export class Perceptron {
   }
 
   /** Trains the perceptron with the given training data once */
-  public train (trainingData: TrainingData[]): void {
+  public train (trainingData: TrainingData[]): number {
     const data: TrainingData[] = shuffle(trainingData);
+    let loss = 0.0;
 
     data.forEach(datum => {
       const guess = this.guess(datum.values);
       const error = datum.label - guess;
-      datum.correct = !error;
+      datum.error = error;
 
       this.weights = this.weights.map((weight, index) => weight + error * datum.values[index] * this.learningRate);
       this.biasWeight = this.biasWeight + error * this.learningRate;
+
+      loss += Math.abs(error / 2);
     });
+
+    return loss;
   }
 
   /** Returns the internal values of the perceptron */
