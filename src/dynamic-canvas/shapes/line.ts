@@ -3,7 +3,7 @@ import { Vector } from '../vector/vector';
 
 export class Line extends Shape {
 
-  constructor (public start: Vector, public end: Vector, public color = 'white') {
+  constructor (public start: Vector, public end: Vector, public color = 'black') {
     super(start);
     this.start = start;
     this.end = end;

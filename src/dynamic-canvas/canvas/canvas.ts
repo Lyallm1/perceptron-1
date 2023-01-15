@@ -1,4 +1,3 @@
-import { Vector } from './../vector/vector';
 import { Shape } from '../shapes/shape';
 
 export class Canvas {
@@ -7,11 +6,8 @@ export class Canvas {
   private height;
 
   private shapes: Shape[] = [];
-  private environmentForces: Vector[] = [];
 
-  private loop: any;
-
-  constructor (container: HTMLElement | null, { width = 800, height = 600, backgroundColor = 'lightgrey' } = {}) {
+  constructor (container: HTMLElement | null, { width = 800, height = 600, backgroundColor = 'white' } = {}) {
     this.width = width;
     this.height = height;
 

@@ -6,10 +6,10 @@ import { Ball } from './dynamic-canvas/shapes/ball';
 import { Line } from './dynamic-canvas/shapes/line';
 import { Text } from './dynamic-canvas/shapes/text';
 
-const perceptron = new Perceptron(2, 0.01);
+const perceptron = new Perceptron(2, 0.001);
 
 function f (x: number): number {
-  return 1.00 * x - 0.42;
+  return 0.23 * x + 0.23;
 }
 
 const trainingData: TrainingData[] = new Array(500).fill(0).map(_ => {
@@ -20,9 +20,9 @@ const trainingData: TrainingData[] = new Array(500).fill(0).map(_ => {
   return { values: [x, y], label, error: 1 };
 });
 
-const canvas = new Canvas(document.getElementById('container'));
-const perceptronVisualization = new Canvas(document.getElementById('container'), { width: 400, height: 300 });
-const lossVisualization = new Canvas(document.getElementById('container'), { width: 400, height: 300 });
+const canvas = new Canvas(document.getElementById('graph'), { width: 800, height: 800 });
+const perceptronVisualization = new Canvas(document.getElementById('perceptron'), { width: 400, height: 300 });
+const lossVisualization = new Canvas(document.getElementById('loss'), { width: 400, height: 300 });
 const lossHistory: number[] = [];
 
 setInterval(() => {
@@ -35,11 +35,11 @@ setInterval(() => {
   lossHistory.push(perceptron.train(trainingData));
 
   canvas.removeShapes();
-  trainingData.map(data => new Ball(3, new Vector(data.values[0] * 400 + 400, data.values[1] * 300 + 300), data.label === 1 ? 'gold' : 'lightblue', data.error ? 'red' : 'green')).forEach(ball => canvas.addShape(ball));
+  trainingData.map(data => new Ball(3, new Vector(data.values[0] * 400 + 400, data.values[1] * 400 + 400), data.label === 1 ? 'gold' : 'lightblue', data.error ? 'red' : 'green')).forEach(ball => canvas.addShape(ball));
 
   console.log(`Thinking: ${perceptron.status.m.toFixed(2)} * x + ${perceptron.status.b.toFixed(2)}`);
 
-  canvas.addShape(new Line(new Vector(0, perceptron.status.f(-1) * 300 + 300), new Vector(800, perceptron.status.f(1) * 300 + 300)));
+  canvas.addShape(new Line(new Vector(0, perceptron.status.f(-1) * 400 + 400), new Vector(800, perceptron.status.f(1) * 400 + 400)));
   canvas.draw();
 
   drawPerceptron(perceptron, 0, 0);
@@ -85,8 +85,9 @@ function drawPerceptron (p: Perceptron, x: number, y: number) {
 }
 
 canvas.addEventListener('mousemove', (e: MouseEvent) => {
-  const x = e.clientX / 400 - 1;
-  const y = e.clientY / 300 - 1;
+  const graphContainer = document.getElementById('graph');
+  const x = (e.clientX - graphContainer!.offsetLeft) / 400 - 1;
+  const y = (e.clientY - graphContainer!.offsetTop + window.scrollY) / 400 - 1;
 
   drawPerceptron(perceptron, x, y);
 });
