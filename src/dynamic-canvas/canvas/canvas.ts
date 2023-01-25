@@ -2,8 +2,8 @@ import { Shape } from '../shapes/shape';
 
 export class Canvas {
   private canvasElement;
-  private width;
-  private height;
+  public width;
+  public height;
 
   private shapes: Shape[] = [];
 

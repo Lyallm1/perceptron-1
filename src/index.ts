@@ -6,45 +6,32 @@ import { Ball } from './dynamic-canvas/shapes/ball';
 import { Line } from './dynamic-canvas/shapes/line';
 import { Text } from './dynamic-canvas/shapes/text';
 
-const perceptron = new Perceptron(2, 0.001);
+let perceptron = new Perceptron(2, 0.001);
+
+let m = 0.5;
+let b = 0.5;
+
+let interval: any;
 
 function f (x: number): number {
-  return 0.23 * x + 0.23;
+  return m * x + b;
 }
-
-const trainingData: TrainingData[] = new Array(500).fill(0).map(_ => {
-  const x = Math.random() * 2 - 1;
-  const y = Math.random() * 2 - 1; // TODO: use utils
-  const label = (y > f(x) ? 1 : -1);
-
-  return { values: [x, y], label, error: 1 };
-});
 
 const canvas = new Canvas(document.getElementById('graph'), { width: 800, height: 800 });
 const perceptronVisualization = new Canvas(document.getElementById('perceptron'), { width: 400, height: 300 });
 const lossVisualization = new Canvas(document.getElementById('loss'), { width: 400, height: 300 });
-const lossHistory: number[] = [];
+let lossHistory: number[] = [];
 
-setInterval(() => {
-  if (!trainingData.find(data => data.error)) {
-    console.log(`Training completed: ${perceptron.status.m.toFixed(2)} * x + ${perceptron.status.b.toFixed(2)} (expected ${f(1) - f(0)} * x + ${f(0)})`);
-    // TODO: stop interval
-    return;
-  }
-
-  lossHistory.push(perceptron.train(trainingData));
+function drawGraph (trainingData: TrainingData[]): void {
+  const halfWidth = canvas.width / 2;
+  const halfHeight = canvas.height / 2;
 
   canvas.removeShapes();
-  trainingData.map(data => new Ball(3, new Vector(data.values[0] * 400 + 400, data.values[1] * 400 + 400), data.label === 1 ? 'gold' : 'lightblue', data.error ? 'red' : 'green')).forEach(ball => canvas.addShape(ball));
+  trainingData.map(data => new Ball(3, new Vector(data.values[0] * halfWidth + halfWidth, data.values[1] * halfHeight + halfHeight), data.label === 1 ? 'gold' : 'lightblue', data.error ? 'red' : 'green')).forEach(ball => canvas.addShape(ball));
 
-  console.log(`Thinking: ${perceptron.status.m.toFixed(2)} * x + ${perceptron.status.b.toFixed(2)}`);
-
-  canvas.addShape(new Line(new Vector(0, perceptron.status.f(-1) * 400 + 400), new Vector(800, perceptron.status.f(1) * 400 + 400)));
+  canvas.addShape(new Line(new Vector(0, perceptron.status.f(-1) * halfHeight + halfHeight), new Vector(canvas.height, perceptron.status.f(1) * halfHeight + halfHeight)));
   canvas.draw();
-
-  drawPerceptron(perceptron, 0, 0);
-  drawLossHistory(lossHistory);
-}, 300);
+}
 
 function drawPerceptron (p: Perceptron, x: number, y: number) {
   perceptronVisualization.removeShapes();
@@ -118,3 +105,49 @@ function drawLossHistory (h: number[]) {
   ctx.strokeStyle = 'black';
   ctx.stroke();
 }
+
+function setM (event: Event) {
+  m = Number((event.target as HTMLInputElement)?.value);
+}
+
+function setB (event: Event) {
+  b = Number((event.target as HTMLInputElement)?.value);
+}
+
+function startTraining () {
+  if (interval) {
+    clearInterval(interval);
+    interval = null;
+  }
+
+  perceptron = new Perceptron(2, 0.001);
+
+  const trainingData: TrainingData[] = new Array(500).fill(0).map(_ => {
+    const x = Math.random() * 2 - 1;
+    const y = Math.random() * 2 - 1; // TODO: use utils
+    const label = (y > f(x) ? 1 : -1);
+
+    return { values: [x, y], label, error: 1 };
+  });
+
+  lossHistory = [];
+
+  interval = setInterval(() => {
+    if (!trainingData.find(data => data.error)) {
+      console.log(`Training completed: ${perceptron.status.m.toFixed(2)} * x + ${perceptron.status.b.toFixed(2)} (expected ${f(1) - f(0)} * x + ${f(0)})`);
+      clearInterval(interval);
+      return;
+    }
+
+    lossHistory.push(perceptron.train(trainingData));
+    console.log(`Thinking: ${perceptron.status.m.toFixed(2)} * x + ${perceptron.status.b.toFixed(2)}`);
+    drawGraph(trainingData);
+    drawPerceptron(perceptron, 0, 0);
+    drawLossHistory(lossHistory);
+  }, 300);
+}
+
+document.getElementById('m')?.addEventListener('change', setM);
+document.getElementById('b')?.addEventListener('change', setB);
+document.getElementById('train-button')?.addEventListener('click', startTraining);
+window.addEventListener('load', startTraining);
