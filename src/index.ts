@@ -73,7 +73,7 @@ function drawPerceptron (p: Perceptron, x: number, y: number) {
 
 canvas.addEventListener('mousemove', (e: MouseEvent) => {
   const graphContainer = document.getElementById('graph');
-  const x = (e.clientX - graphContainer!.offsetLeft) / 400 - 1;
+  const x = (e.clientX - graphContainer!.offsetLeft + window.scrollX) / 400 - 1;
   const y = (e.clientY - graphContainer!.offsetTop + window.scrollY) / 400 - 1;
 
   drawPerceptron(perceptron, x, y);
