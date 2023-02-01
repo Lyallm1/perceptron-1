@@ -41,6 +41,7 @@
 
     #graph {
       width: 800px;
+      height: 800px;
       border: solid 5px gold;
     }
 
@@ -88,14 +89,20 @@
       margin-left: 20px;
     }
 
-    #perceptron {
-      width: 400px;
-      border: solid 5px lightblue;
-    }
-
+    #perceptron,
     #loss {
       width: 400px;
       border: solid 5px lightblue;
+      position: relative;
+    }
+
+    #perceptron h2,
+    #loss h2 {
+      position: absolute;
+      top: 5px;
+      right: 15px;
+      margin: 0;
+      color: grey;
     }
   </style>
 </head>
@@ -111,8 +118,12 @@
         <input id="b" type="number" min="-1" max="1" step="0.01" value="-0.5"/>
         <button id="train-button">Train!</button>
       </div>
-      <div id="perceptron"></div>
-      <div id="loss"></div>
+      <div id="perceptron">
+        <h2>Perceptron</h2>
+      </div>
+      <div id="loss">
+        <h2>Loss</h2>
+      </div>
     </aside>
   </div>
 

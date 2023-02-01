@@ -3,7 +3,7 @@ import { Vector } from '../vector/vector';
 
 export class Text extends Shape {
 
-  constructor (public position: Vector, public text: string, public size = '12px', public color = 'black') {
+  constructor (public position: Vector, public text: string, public size = '14px', public color = 'black') {
     super(position);
   }
 

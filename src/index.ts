@@ -27,6 +27,15 @@ function drawGraph (trainingData: TrainingData[]): void {
   const halfHeight = canvas.height / 2;
 
   canvas.removeShapes();
+
+  canvas.addShape(new Line(new Vector(halfWidth, 0), new Vector(halfWidth, canvas.width), 'grey'));
+  canvas.addShape(new Line(new Vector(0, halfHeight), new Vector(canvas.height, halfWidth), 'grey'));
+
+  canvas.addShape(new Text(new Vector(halfWidth + 10, 20), '-1', '20px', 'grey'));
+  canvas.addShape(new Text(new Vector(halfWidth + 10, canvas.height - 5), '1', '20px', 'grey'));
+  canvas.addShape(new Text(new Vector(5, halfHeight + 20), '-1', '20px', 'grey'));
+  canvas.addShape(new Text(new Vector(canvas.width - 20, halfHeight + 20), '1', '20px', 'grey'));
+
   trainingData.map(data => new Ball(3, new Vector(data.values[0] * halfWidth + halfWidth, data.values[1] * halfHeight + halfHeight), data.label === 1 ? 'gold' : 'lightblue', data.error ? 'red' : 'green')).forEach(ball => canvas.addShape(ball));
 
   canvas.addShape(new Line(new Vector(0, perceptron.status.f(-1) * halfHeight + halfHeight), new Vector(canvas.height, perceptron.status.f(1) * halfHeight + halfHeight)));
@@ -35,37 +44,37 @@ function drawGraph (trainingData: TrainingData[]): void {
 
 function drawPerceptron (p: Perceptron, x: number, y: number) {
   perceptronVisualization.removeShapes();
-  perceptronVisualization.addShape(new Text(new Vector(5, 56), 'x', '24px'));
-  perceptronVisualization.addShape(new Text(new Vector(5, 156), 'y', '24px'));
-  perceptronVisualization.addShape(new Text(new Vector(5, 255), 'bias', '10px'));
+  perceptronVisualization.addShape(new Text(new Vector(15, 56), 'x', '24px'));
+  perceptronVisualization.addShape(new Text(new Vector(15, 156), 'y', '24px'));
 
-  perceptronVisualization.addShape(new Ball(25, new Vector(50, 50), 'white', 'black'));
-  perceptronVisualization.addShape(new Ball(25, new Vector(50, 150), 'white', 'black'));
-  perceptronVisualization.addShape(new Ball(25, new Vector(50, 250), 'white', 'black'));
+  perceptronVisualization.addShape(new Ball(25, new Vector(60, 50), 'white', 'black'));
+  perceptronVisualization.addShape(new Ball(25, new Vector(60, 150), 'white', 'black'));
+  perceptronVisualization.addShape(new Ball(25, new Vector(60, 250), 'white', 'black'));
 
-  perceptronVisualization.addShape(new Line(new Vector(75, 50), new Vector(175, 150), 'black'));
-  perceptronVisualization.addShape(new Line(new Vector(75, 150), new Vector(175, 150), 'black'));
-  perceptronVisualization.addShape(new Line(new Vector(75, 250), new Vector(175, 150), 'black'));
+  perceptronVisualization.addShape(new Line(new Vector(83, 60), new Vector(190, 145), 'black'));
+  perceptronVisualization.addShape(new Line(new Vector(85, 150), new Vector(185, 150), 'black'));
+  perceptronVisualization.addShape(new Line(new Vector(83, 240), new Vector(190, 155), 'black'));
 
-  perceptronVisualization.addShape(new Text(new Vector(105, 76), p.status.weights[0].toFixed(3)));
-  perceptronVisualization.addShape(new Text(new Vector(105, 145), p.status.weights[1].toFixed(3)));
-  perceptronVisualization.addShape(new Text(new Vector(105, 235), p.status.biasWeight.toFixed(3)));
+  perceptronVisualization.addShape(new Text(new Vector(125, 86), p.status.weights[0].toFixed(3)));
+  perceptronVisualization.addShape(new Text(new Vector(115, 145), p.status.weights[1].toFixed(3)));
+  perceptronVisualization.addShape(new Text(new Vector(125, 225), p.status.biasWeight.toFixed(3)));
 
-  perceptronVisualization.addShape(new Ball(25, new Vector(200, 150), 'white', 'black'));
+  perceptronVisualization.addShape(new Ball(25, new Vector(210, 150), 'white', 'black'));
 
-  perceptronVisualization.addShape(new Line(new Vector(225, 150), new Vector(325, 150), 'black'));
+  perceptronVisualization.addShape(new Line(new Vector(235, 150), new Vector(325, 150), 'black'));
 
-  perceptronVisualization.addShape(new Text(new Vector(75, 290), `y = ${p.status.m.toFixed(2)}x + ${p.status.b.toFixed(2)}`, '30px'));
+  perceptronVisualization.addShape(new Text(new Vector(125, 290), `y = ${p.status.m.toFixed(2)}x + ${p.status.b.toFixed(2)}`, '30px'));
 
-  perceptronVisualization.addShape(new Text(new Vector(40, 255), '1'));
+  perceptronVisualization.addShape(new Text(new Vector(55, 255), '1'));
+  perceptronVisualization.addShape(new Text(new Vector(50, 290), 'bias', '12px'));
   if (x && y) {
-    perceptronVisualization.addShape(new Text(new Vector(40, 55), x.toFixed(2)));
-    perceptronVisualization.addShape(new Text(new Vector(40, 155), y.toFixed(2)));
+    perceptronVisualization.addShape(new Text(new Vector(45, 55), x.toFixed(2)));
+    perceptronVisualization.addShape(new Text(new Vector(45, 155), y.toFixed(2)));
 
     const weightedSum = x * p.status.weights[0] + y * p.status.weights[1] + p.status.biasWeight;
-    perceptronVisualization.addShape(new Text(new Vector(190, 155), weightedSum.toFixed(2)));
+    perceptronVisualization.addShape(new Text(new Vector(195, 155), weightedSum.toFixed(2)));
 
-    perceptronVisualization.addShape(new Ball(25, new Vector(360, 150), weightedSum > 0 ? 'gold' : 'lightblue', 'none'));
+    perceptronVisualization.addShape(new Ball(25, new Vector(350, 150), weightedSum > 0 ? 'gold' : 'lightblue', 'none'));
   }
 
   perceptronVisualization.draw();
@@ -85,8 +94,8 @@ function drawLossHistory (h: number[]) {
   const w = 350 / h.length;
   const m = Math.max(...h);
 
-  lossVisualization.addShape(new Line(new Vector(25, 25), new Vector(25, 275)));
-  lossVisualization.addShape(new Line(new Vector(25, 275), new Vector(375, 275)));
+  lossVisualization.addShape(new Line(new Vector(25, 25), new Vector(25, 275), 'grey'));
+  lossVisualization.addShape(new Line(new Vector(25, 275), new Vector(375, 275), 'grey'));
   lossVisualization.draw();
 
   const ctx = lossVisualization.context;
@@ -94,6 +103,7 @@ function drawLossHistory (h: number[]) {
   h.forEach((l, i) => {
     const x = 25 + w * i;
     const y = 275 - l / m * 250;
+    ctx.fillStyle = 'grey';
     ctx.fillText(l + '', x - 3, y - 5);
     if (i === 0) ctx.moveTo(x, y);
     else {
