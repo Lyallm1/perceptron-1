@@ -10,6 +10,8 @@ let perceptron = new Perceptron(2, 0.001);
 
 let m = 0.5;
 let b = 0.5;
+let dataPoints = 1000;
+let learningRate = 0.001;
 
 let interval: any;
 
@@ -124,15 +126,23 @@ function setB (event: Event) {
   b = Number((event.target as HTMLInputElement)?.value);
 }
 
+function setDataPoints (event: Event) {
+  dataPoints = Number((event.target as HTMLInputElement)?.value);
+}
+
+function setLearningRate (event: Event) {
+  learningRate = Number((event.target as HTMLInputElement)?.value);
+}
+
 function startTraining () {
   if (interval) {
     clearInterval(interval);
     interval = null;
   }
 
-  perceptron = new Perceptron(2, 0.001);
+  perceptron = new Perceptron(2, learningRate);
 
-  const trainingData: TrainingData[] = new Array(500).fill(0).map(_ => {
+  const trainingData: TrainingData[] = new Array(dataPoints).fill(0).map(_ => {
     const x = Math.random() * 2 - 1;
     const y = Math.random() * 2 - 1; // TODO: use utils
     const label = (y > f(x) ? 1 : -1);
@@ -157,7 +167,14 @@ function startTraining () {
   }, 300);
 }
 
+function stopTraining () {
+  clearInterval(interval);
+}
+
 document.getElementById('m')?.addEventListener('change', setM);
 document.getElementById('b')?.addEventListener('change', setB);
+document.getElementById('datapoints')?.addEventListener('change', setDataPoints);
+document.getElementById('learningrate')?.addEventListener('change', setLearningRate);
 document.getElementById('train-button')?.addEventListener('click', startTraining);
+document.getElementById('stop-button')?.addEventListener('click', stopTraining);
 window.addEventListener('load', startTraining);

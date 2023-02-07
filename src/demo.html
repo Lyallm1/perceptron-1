@@ -52,23 +52,6 @@
       width: 400px;
     }
 
-    #action {
-      padding: 15px;
-      width: 370px;
-      border: solid 5px lightblue;
-    }
-
-    #action span {
-      font-size: 30px;
-    }
-
-    #action input {
-      width: 65px;
-      font-size: 18px;
-      border-radius: 15px;
-      padding: 10px;
-    }
-
     button {
       padding: 5px 15px;
       background-color: gold;
@@ -89,6 +72,18 @@
       margin-left: 20px;
     }
 
+    #action span {
+      font-size: 40px;
+    }
+
+    #action input {
+      width: 65px;
+      font-size: 18px;
+      border-radius: 15px;
+      padding: 10px;
+    }
+
+    #action,
     #perceptron,
     #loss {
       width: 400px;
@@ -96,6 +91,16 @@
       position: relative;
     }
 
+    #action {
+      padding: 45px 15px 15px 15px;
+      width: 370px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      row-gap: 15px;
+    }
+
+    #action h2,
     #perceptron h2,
     #loss h2 {
       position: absolute;
@@ -109,25 +114,42 @@
 <body>
   <div id="container">
     <h1 id="title">Perceptron</h1>
+
     <main id="graph"></main>
+
     <aside id="info">
       <div id="action">
-        <span>y = </span>
-        <input id="m" type="number" min="-1" max="1" step="0.01" value="0.5"/>
-        <span>x + </span>
-        <input id="b" type="number" min="-1" max="1" step="0.01" value="-0.5"/>
-        <button id="train-button">Train!</button>
+        <h2>Settings</h2>
+        <div id="function">
+          <span>y = </span>
+          <input id="m" type="number" min="-1" max="1" step="0.01" value="0.5"/>
+          <span>x + </span>
+          <input id="b" type="number" min="-1" max="1" step="0.01" value="-0.5"/>
+        </div>
+        <div>
+          <span>Data points</span>
+          <input id="datapoints" type="number" min="0" max="10000" step="1" value="1000"/>
+        </div>
+        <div>
+          <span>Learning rate</span>
+          <input id="learningrate" type="number" min="0" max="1" step="0.001" value="0.001"/>
+        </div>
+        <div>
+          <button id="train-button">Train!</button>
+          <button id="stop-button">Stop!</button>
+        </div>
       </div>
+
       <div id="perceptron">
         <h2>Perceptron</h2>
       </div>
+
       <div id="loss">
         <h2>Loss</h2>
       </div>
     </aside>
   </div>
 
-  <script type="module" src="main.js">
-  </script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
