@@ -1,155 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perceptron</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oregano:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    body {
-      background-color: #fafafa;
-      font-family: "Oregano";
-    }
-
-    #container {
-      width: 1250px;
-      margin: auto;
-      display: flex;
-      flex-wrap: wrap;
-      column-gap: 24px;
-    }
-
-    #title {
-      width: 100%;
-      font-size: 100px;
-      line-height: 0px;
-      margin-top: 50px;
-      text-align: center;
-      color: lightblue;
-      text-decoration: underline;
-      text-decoration-color: gold;
-    }
-
-    #title:first-letter {
-      color: gold;
-    }
-
-    #graph {
-      width: 800px;
-      height: 800px;
-      border: solid 5px gold;
-    }
-
-    #info {
-      display: flex;
-      flex-direction: column;
-      row-gap: 24px;
-      width: 400px;
-    }
-
-    button {
-      padding: 5px 15px;
-      background-color: gold;
-      border: solid 3px darkgoldenrod;
-      border-radius: 15px;
-      font-family: "Oregano";
-      font-size: 30px;
-      color: darkgoldenrod;
-      cursor: pointer;
-    }
-
-    button:hover {
-      border-color: goldenrod;
-      color: goldenrod;
-    }
-
-    #action button {
-      margin-left: 20px;
-    }
-
-    #action span {
-      font-size: 40px;
-    }
-
-    #action input {
-      width: 65px;
-      font-size: 18px;
-      border-radius: 15px;
-      padding: 10px;
-    }
-
-    #action,
-    #perceptron,
-    #loss {
-      width: 400px;
-      border: solid 5px lightblue;
-      position: relative;
-    }
-
-    #action {
-      padding: 45px 15px 15px 15px;
-      width: 370px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      row-gap: 15px;
-    }
-
-    #action h2,
-    #perceptron h2,
-    #loss h2 {
-      position: absolute;
-      top: 5px;
-      right: 15px;
-      margin: 0;
-      color: grey;
-    }
-  </style>
-</head>
-<body>
-  <div id="container">
-    <h1 id="title">Perceptron</h1>
-
-    <main id="graph"></main>
-
-    <aside id="info">
-      <div id="action">
-        <h2>Settings</h2>
-        <div id="function">
-          <span>y = </span>
-          <input id="m" type="number" min="-1" max="1" step="0.01" value="0.5"/>
-          <span>x + </span>
-          <input id="b" type="number" min="-1" max="1" step="0.01" value="-0.5"/>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perceptron</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oregano:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.scss">
+  </head>
+  <body>
+    <div id="container">
+      <h1 id="title">Perceptron</h1>
+      <main id="graph"></main>
+      <aside id="info">
+        <div id="action">
+          <h2>Settings</h2>
+          <div id="function">
+            <span>y = </span> <input id="m" type="number" min="-1" max="1" step="0.01" value="0.5">
+            <span>x + </span> <input id="b" type="number" min="-1" max="1" step="0.01" value="-0.5">
+          </div>
+          <div><span>Data points</span> <input id="datapoints" type="number" min="0" max="10000" step="1" value="1000"></div>
+          <div><span>Learning rate</span> <input id="learningrate" type="number" min="0" max="1" step="0.001" value="0.001"></div>
+          <div>
+            <button id="train-button">Train!</button>
+            <button id="stop-button">Stop!</button>
+          </div>
         </div>
-        <div>
-          <span>Data points</span>
-          <input id="datapoints" type="number" min="0" max="10000" step="1" value="1000"/>
-        </div>
-        <div>
-          <span>Learning rate</span>
-          <input id="learningrate" type="number" min="0" max="1" step="0.001" value="0.001"/>
-        </div>
-        <div>
-          <button id="train-button">Train!</button>
-          <button id="stop-button">Stop!</button>
-        </div>
-      </div>
-
-      <div id="perceptron">
-        <h2>Perceptron</h2>
-      </div>
-
-      <div id="loss">
-        <h2>Loss</h2>
-      </div>
-    </aside>
-  </div>
-
-  <script type="module" src="main.js"></script>
-</body>
+        <div id="perceptron"><h2>Perceptron</h2></div>
+        <div id="loss"><h2>Loss</h2></div>
+      </aside>
+    </div>
+    <script type="module" src="main.js"></script>
+  </body>
 </html>

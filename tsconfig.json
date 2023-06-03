@@ -5,8 +5,7 @@
     "moduleResolution": "nodenext",
     "target": "ESNext",
     "declaration": true,
-    "strict": true
-  },
-  "include": ["src/**/*.ts"],
+    "strict": false
+  }, "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts", "node_modules/**/*"]
 }
