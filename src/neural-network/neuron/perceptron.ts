@@ -1,68 +1,36 @@
-import { sign } from '../activation';
-import { TrainingData } from '../training-data';
-import { randomValue, shuffle } from '../utils';
+import { randomValue, shuffle } from '../utils.js';
+
+import { TrainingData } from '../training-data.js';
+import { sign } from '../activation.js';
 
 export class Perceptron {
   private weights: number[];
   private biasWeight: number;
 
-  constructor (numberOfInputs: number, public learningRate = 0.01) {
+  constructor(numberOfInputs: number, public learningRate = 0.01) {
     this.weights = new Array(numberOfInputs).fill(0).map(randomValue);
     this.biasWeight = randomValue();
   }
 
-  /** Guesses the output for the given inputs */
-  public guess (inputs: number[]): number {
-    let sum = inputs.reduce((sum, input, index) => sum + input * this.weights[index], 0);
-    sum += this.biasWeight;
-
-    const guess = sign(sum);
-
-    return guess;
+  guess(inputs: number[]): number {
+    return sign(inputs.reduce((sum, input, i) => sum + input * this.weights[i], 0) + this.biasWeight);
   }
 
-  /** Returns the linear function this perceptron represents (y = mx + b) */
-  private get f (): (x: number) => number {
-    return (x: number): number => this.m * x + this.b;
-  }
-
-  /** Returns the m part of the linear function this perceptron represents (y = mx + b) */
-  private get m (): number {
-    return -this.weights[0] / this.weights[1];
-  }
-
-  /** Returns the b part of the linear function this perceptron represents (y = mx + b) */
-  private get b (): number {
-    return -this.biasWeight / this.weights[1];
-  }
-
-  /** Trains the perceptron with the given training data once */
-  public train (trainingData: TrainingData[]): number {
-    const data: TrainingData[] = shuffle(trainingData);
-    let loss = 0.0;
-
+  train(trainingData: TrainingData[]): number {
+    const data = shuffle(trainingData);
+    let loss = 0;
     data.forEach(datum => {
-      const guess = this.guess(datum.values);
-      const error = datum.label - guess;
+      const error = datum.label - this.guess(datum.values);
       datum.error = error;
-
       this.weights = this.weights.map((weight, index) => weight + error * datum.values[index] * this.learningRate);
-      this.biasWeight = this.biasWeight + error * this.learningRate;
-
+      this.biasWeight += error * this.learningRate;
       loss += Math.abs(error / 2);
     });
-
     return loss;
   }
 
-  /** Returns the internal values of the perceptron */
-  public get status () {
-    return {
-      weights: this.weights,
-      biasWeight: this.biasWeight,
-      f: this.f,
-      m: this.m,
-      b: this.b,
-    };
-  }
+  private get f() { return (x: number) => this.m * x + this.b; }
+  private get m() { return -this.weights[0] / this.weights[1]; }
+  private get b() { return -this.biasWeight / this.weights[1]; }
+  get status() { return { weights: this.weights, biasWeight: this.biasWeight, f: this.f, m: this.m, b: this.b }; }
 }

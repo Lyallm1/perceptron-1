@@ -1,15 +1,12 @@
-import { Shape } from './shape';
-import { Vector } from '../vector/vector';
+import { Shape } from './shape.js';
+import { Vector } from '../vector/vector.js';
 
 export class Line extends Shape {
-
   constructor (public start: Vector, public end: Vector, public color = 'black') {
     super(start);
-    this.start = start;
-    this.end = end;
   }
 
-  draw (context: CanvasRenderingContext2D): void {
+  draw(context: CanvasRenderingContext2D) {
     context.beginPath();
     context.strokeStyle = this.color;
     context.lineWidth = 3;
@@ -17,5 +14,4 @@ export class Line extends Shape {
     context.lineTo(this.end.x, this.end.y);
     context.stroke();
   }
-
 }

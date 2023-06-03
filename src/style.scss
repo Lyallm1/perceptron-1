@@ -1,0 +1,75 @@
+body {
+    background-color: #fafafa;
+    font-family: "Oregano";
+}
+#container {
+    width: 1250px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 24px;
+}
+#title {
+    width: 100%;
+    font-size: 100px;
+    line-height: 0px;
+    margin-top: 50px;
+    text-align: center;
+    color: lightblue;
+    text-decoration: underline;
+    text-decoration-color: gold;
+    &:first-letter { color: gold; }
+}
+#graph {
+    width: 800px;
+    height: 800px;
+    border: solid 5px gold;
+}
+#info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+    width: 400px;
+}
+button {
+    padding: 5px 15px;
+    background-color: gold;
+    border: solid 3px darkgoldenrod;
+    border-radius: 15px;
+    font-family: "Oregano";
+    font-size: 30px;
+    color: darkgoldenrod;
+    cursor: pointer;
+    &:hover {
+        border-color: goldenrod;
+        color: goldenrod;
+    }
+}
+#action, #perceptron, #loss {
+    width: 400px;
+    border: solid 5px lightblue;
+    position: relative;
+    h2 {
+        position: absolute;
+        top: 5px;
+        right: 15px;
+        margin: 0;
+        color: grey;
+    }
+}
+#action {
+    padding: 45px 15px 15px 15px;
+    width: 370px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 15px;
+    button { margin-left: 20px; }
+    span { font-size: 40px; }
+    input {
+        width: 65px;
+        font-size: 18px;
+        border-radius: 15px;
+        padding: 10px;
+    }
+}
